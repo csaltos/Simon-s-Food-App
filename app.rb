@@ -94,3 +94,7 @@ end
 get '/recipes/lasagne' do
   erb :lasagne
 end
+
+get '/recipes/thaigreencurry' do
+  erb :thaigreencurry
+end
