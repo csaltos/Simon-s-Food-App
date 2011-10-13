@@ -92,9 +92,5 @@ get '/auth/facebook/callback' do
 end
 
 get '/recipes/lasagne' do
-  @request_url = "http://"+ENV["HTTP_HOST"]+ENV["REQUEST_PATH"]
-  @client = Mogli::Client.new(session[:at])
-  @app  = Mogli::Application.find(ENV["FACEBOOK_APP_ID"], @client)
-  puts @app
   erb :lasagne
 end
