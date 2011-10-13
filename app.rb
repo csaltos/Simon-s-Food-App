@@ -90,3 +90,9 @@ get '/auth/facebook/callback' do
   session[:at] = client.access_token
   redirect '/'
 end
+
+get '/recipes/lasagne' do
+  @client = Mogli::Client.new(session[:at])
+  @app  = Mogli::Application.find(ENV["FACEBOOK_APP_ID"], @client)
+  erb :lasagne
+end
