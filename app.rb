@@ -106,3 +106,7 @@ end
 get '/ingredients/beef' do
   erb :beef
 end
+
+get '/ingredients/pasta' do
+  erb :pasta
+end
