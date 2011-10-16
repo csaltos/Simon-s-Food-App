@@ -98,3 +98,11 @@ end
 get '/recipes/thaigreencurry' do
   erb :thaigreencurry
 end
+
+get '/recipes/pizza' do
+  erb :pizza
+end
+
+get '/ingredients/beef' do
+  erb :beef
+end
