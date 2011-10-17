@@ -55,40 +55,20 @@ error(Mogli::Client::HTTPException) do
 end
 
 get "/" do
-  redirect "/auth/facebook" unless session[:at]
-  @client = Mogli::Client.new(session[:at])
-
-  # limit queries to 15 results
-  @client.default_params[:limit] = 15
-
-  @app  = Mogli::Application.find(ENV["FACEBOOK_APP_ID"], @client)
-  @user = Mogli::User.find("me", @client)
-
-  # access friends, photos and likes directly through the user instance
-  @friends = @user.friends[0, 4]
-  @photos  = @user.photos[0, 16]
-  @likes   = @user.likes[0, 4]
-
-  # for other data you can always run fql
-  @friends_using_app = @client.fql_query("SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1")
-
-  erb :index
+  ""
 end
 
 # used to close the browser window opened to post to wall/send to friends
 get "/close" do
-  "<body onload='window.close();'/>"
+  ""
 end
 
 get "/auth/facebook" do
-  session[:at]=nil
-  redirect authenticator.authorize_url(:scope => FACEBOOK_SCOPE, :display => 'page')
+  ""
 end
 
 get '/auth/facebook/callback' do
-  client = Mogli::Client.create_from_code_and_authenticator(params[:code], authenticator)
-  session[:at] = client.access_token
-  redirect '/'
+  ""
 end
 
 get '/recipes/lasagne' do
