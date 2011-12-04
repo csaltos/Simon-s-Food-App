@@ -90,3 +90,7 @@ end
 get '/ingredients/pasta' do
   erb :pasta
 end
+
+get '/occasions/birthday' do
+  erb :birthday
+end
