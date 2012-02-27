@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    
+    <% yield_content :head %>
+    <meta property="og:site_name" content="Simon's Food App"/>
+    <meta property="fb:app_id" content="214109771989025" />
+  </head>
+  <body>
+	  
+	  <div id="header">
+		  <div>Simon's Food App</div>
+      <div id="menu">
+        <div class="recipes">
+      	<h2>Recipes</h2>
+          <ul>
+            <li><a href="/recipes/lasagne">Lasagne</a></li>
+            <li><a href="/recipes/pizza">Pizza</a></li>
+            <li><a href="/recipes/thaigreencurry">Thai Green Curry</a></li>
+          </ul>
+        </div>
+        <div class="ingredients">
+          <h2>Ingredients</h2>
+          <ul>
+            <li><a href="/ingredients/beef">Beef</a></li>
+            <li><a href="/ingredients/pasta">Pasta</a></li>
+          </ul>
+        </div>
+        <div class="occasions">
+          <h2>Occasions</h2>
+          <ul>
+            <li><a href="/occasions/birthday">Birthday</a></li>
+          </ul>
+        </div>
+      </div>
+      
+	  </div>
+	  
+	  <%= yield %>
+	  
+  </body>
+</html>

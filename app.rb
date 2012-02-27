@@ -1,5 +1,6 @@
 require "sinatra"
 require "mogli"
+require "sinatra/content_for"
 
 enable :sessions
 set :raise_errors, false
@@ -48,27 +49,10 @@ helpers do
   end
 end
 
-# the facebook session expired! reset ours and restart the process
-error(Mogli::Client::HTTPException) do
-  session[:at] = nil
-  redirect "/auth/facebook"
-end
+
 
 get "/" do
-  ""
-end
-
-# used to close the browser window opened to post to wall/send to friends
-get "/close" do
-  ""
-end
-
-get "/auth/facebook" do
-  ""
-end
-
-get '/auth/facebook/callback' do
-  ""
+  erb :index
 end
 
 get '/recipes/lasagne' do
