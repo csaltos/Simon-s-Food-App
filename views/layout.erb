@@ -1,43 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="utf-8">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    
+    <link href="/stylesheets/reset.css" type="text/css" rel="stylesheet">
+    <link href="/stylesheets/base.css" type="text/css" rel="stylesheet">
     
     <% yield_content :head %>
     <meta property="og:site_name" content="Simon's Food App"/>
     <meta property="fb:app_id" content="214109771989025" />
   </head>
   <body>
+    <div id="fb-root"></div>
+    <script>
+      var permissions = null; // stores the permissions the user had granted the app
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '214109771989025', // App ID
+          channelUrl : '//'+window.location.hostname+'/channel', // Channel File
+          status     : true, // check login status
+          cookie     : true, // enable cookies to allow the server to access the session
+          xfbml      : true  // parse XFBML
+        });
+
+		// autologin & permissions check
+		FB.Event.subscribe('auth.statusChange', function(rsp) {
+			console.log(rsp)
+			if (rsp.authResponse) {
+				FB.api('/me', function(me){
+					console.log(me)
+					document.getElementById('fb-username').innerHTML = me.name;
+					document.getElementById('fb-login-button').style.display = 'none';
+					document.getElementById('fb-loggedin').style.display = 'block';
+				});
+        // get the permissions the user's already granted, we'll need them later
+				FB.api('/me/permissions', function(response){
+					console.log(response.data[0]);
+          permissions = response.data[0];
+				})
+			}
+		})
+		
+		// Cook Action
+		document.getElementById('cook-button').addEventListener('click', function(e){
+      if (permissions && !permissions.publish_actions){
+        console.log('user needs to grant publish_actions permission')
+        FB.login(function(rsp){
+          console.log(rsp)
+        },{scope:'publish_actions'})
+      
+      } else {
+        // all good, let try and publish an action
+  			FB.api('/me/simonsfoodapp:cook', 'POST', {
+  				"recipe": document.getElementById('og-url').getAttribute('content')
+  			}, function(rsp){
+          console.log(rsp)
+  				if (rsp.id) {
+  				  alert('action published with ID: ' + rsp.id)
+  				}
+  			})
+      }
+		})
+        
+      }; // end fbAsyncInit
+
+      // Load the SDK Asynchronously
+      (function(d){
+         var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement('script'); js.id = id; js.async = true;
+         js.src = "//connect.facebook.net/en_US/all.js";
+         ref.parentNode.insertBefore(js, ref);
+       }(document));
+    </script>
 	  
 	  <div id="header">
-		  <div>Simon's Food App</div>
-      <div id="menu">
-        <div class="recipes">
-      	<h2>Recipes</h2>
-          <ul>
-            <li><a href="/recipes/lasagne">Lasagne</a></li>
-            <li><a href="/recipes/pizza">Pizza</a></li>
-            <li><a href="/recipes/thaigreencurry">Thai Green Curry</a></li>
-          </ul>
-        </div>
-        <div class="ingredients">
-          <h2>Ingredients</h2>
-          <ul>
-            <li><a href="/ingredients/beef">Beef</a></li>
-            <li><a href="/ingredients/pasta">Pasta</a></li>
-          </ul>
-        </div>
-        <div class="occasions">
-          <h2>Occasions</h2>
-          <ul>
-            <li><a href="/occasions/birthday">Birthday</a></li>
-          </ul>
-        </div>
-      </div>
+		  <div id="apptitle">Simon's Food App</div>
+	      <div id="menu">
+	        <div class="recipes">
+	      	<h2>Recipes</h2>
+	          <ul>
+	            <li><a href="/recipes/lasagne">Lasagne</a></li>
+	            <li><a href="/recipes/pizza">Pizza</a></li>
+	            <li><a href="/recipes/thaigreencurry">Thai Green Curry</a></li>
+	          </ul>
+	        </div>
+	        <div class="ingredients">
+	          <h2>Ingredients</h2>
+	          <ul>
+	            <li><a href="/ingredients/beef">Beef</a></li>
+	            <li><a href="/ingredients/pasta">Pasta</a></li>
+	          </ul>
+	        </div>
+	        <div class="occasions">
+	          <h2>Occasions</h2>
+	          <ul>
+	            <li><a href="/occasions/birthday">Birthday</a></li>
+	          </ul>
+	        </div>
+	      </div>
+		 </div>
       
+ 		<div id="fb-login">
+ 			<fb:login-button id="fb-login-button">
+				Login with Facebook
+			</fb:login-button>
+			<div id="fb-loggedin">
+				Hi, <span id="fb-username"></span>
+				(<a href="#" onclick="FB.logout()">Logout</a>)
+			</div>
+ 		</div>
+		 
+
+	  <div id="content">
+	    <%= yield %>
 	  </div>
-	  
-	  <%= yield %>
-	  
+    
   </body>
 </html>
