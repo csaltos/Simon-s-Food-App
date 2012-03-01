@@ -2,8 +2,17 @@ body {
 	text-align:center;
 }
 
+img {
+	max-width:100%;
+	width:100%;
+}
+
 #header {
 	padding:10px;
+}
+
+#content {
+	padding:0px;
 }
 
 form input[type="button"] {
