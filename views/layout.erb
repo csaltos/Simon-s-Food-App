@@ -41,10 +41,15 @@
 		
 		// Cook Action
 		document.getElementById('cook-button').addEventListener('click', function(e){
+    
       if (permissions && !permissions.publish_actions){
+        // user had not granted publish_actions, we need that perm
         console.log('user needs to grant publish_actions permission')
         FB.login(function(rsp){
-          console.log(rsp)
+  				FB.api('/me/permissions', function(response){
+  					console.log(response.data[0]);
+            permissions = response.data[0];
+  				})
         },{scope:'publish_actions'})
       
       } else {
