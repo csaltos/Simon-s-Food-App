@@ -15,6 +15,11 @@ img {
 	padding:10px 0 0 0;
 } 
 
+#fb-login-button {
+	font-size:12px;
+	padding:6px 12px;
+}
+
 form input[type="button"] {
 	width: 90%;
 	font-size:120%;
