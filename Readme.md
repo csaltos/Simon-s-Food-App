@@ -1,7 +1,7 @@
-Facebook/Heroku sample app -- Ruby
+Simon's Food App - Facebook Open Graph demo application
 ==================================
 
-This is a sample app showing use of the Facebook Graph API, written in Ruby, designed for deployment to [Heroku](http://www.heroku.com/).
+This is a sample app showing a basic implementation of Facebook Open Graph, written in Ruby, designed for deployment to [Heroku](http://www.heroku.com/).
 
 Run locally
 -----------
@@ -21,11 +21,6 @@ Launch the app with [Foreman](http://blog.daviddollar.org/2011/05/06/introducing
 
     foreman start
 
-Deploy to Heroku via Facebook integration
------------------------------------------
-
-The easiest way to deploy is to create an app on Facebook and click Cloud Services -> Get Started, then choose Ruby from the dropdown.  You can then `git clone` the resulting app from Heroku.
-
 Deploy to Heroku directly
 -------------------------
 
@@ -35,5 +30,4 @@ If you prefer to deploy yourself, push this code to a new Heroku app on the Ceda
     git push heroku master
     heroku config:add FACEBOOK_APP_ID=12345 FACEBOOK_SECRET=abcde
 
-Enter the URL for your Heroku app into the Website URL section of the Facebook app settings page, then you can visit your app on the web.
 
