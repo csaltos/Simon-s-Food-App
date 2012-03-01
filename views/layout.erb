@@ -46,17 +46,18 @@
     
       if (!permissions || 
           (permissions && !permissions.publish_actions)){
-        // user had not granted publish_actions, we need that perm
-        console.log('user needs to grant publish_actions permission')
+        // user had not granted publish_actions, has not auth'd this app, or is not logged in to Facebook
+        console.log('user needs to grant publish_actions permission, login, or auth this app')
         FB.login(function(rsp){
   				FB.api('/me/permissions', function(response){
   					console.log(response.data[0]);
             permissions = response.data[0];
   				})
+          // Could re-attempt to publish here, but won't for simplicity
         },{scope:'publish_actions'})
       
       } else {
-        // all good, let try and publish an action
+        // all good, let try and publish an action using the og:url tag as the object URL
   			FB.api('/me/simonsfoodapp:cook', 'POST', {
   				"recipe": document.getElementById('og-url').getAttribute('content')
   			}, function(rsp){
