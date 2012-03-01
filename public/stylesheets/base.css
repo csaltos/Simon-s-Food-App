@@ -28,6 +28,22 @@ body {}
 	display:block;
 	padding:10px 20px;
 }
+#fb-login {
+	background-color:#eee;
+	display:block;
+	padding:10px 20px;
+}
+#fb-login-button {
+	background:#3b5998;
+	border-radius: 3px;
+	padding:4px 6px;
+	color:#dfe3ee;
+	text-decoration:none;
+	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+	font-weight:bold;
+	font-size:11px;
+}
+
 #fb-loggedin {
 	display:none;
 }

@@ -38,6 +38,10 @@
 					console.log(response.data[0]);
           permissions = response.data[0];
 				})
+			} else {
+				document.getElementById('fb-login-button').style.display = 'block';
+				document.getElementById('fb-loggedin').style.display = 'none';
+			  
 			}
 		})
 		
@@ -109,9 +113,9 @@
 		 </div>
       
  		<div id="fb-login">
- 			<fb:login-button id="fb-login-button">
+ 			<a href="#" onclick="FB.login()" id="fb-login-button">
 				Login with Facebook
-			</fb:login-button>
+			</a>
 			<div id="fb-loggedin">
 				Hi, <span id="fb-username"></span>
 				(<a href="#" onclick="FB.logout()">Logout</a>)
