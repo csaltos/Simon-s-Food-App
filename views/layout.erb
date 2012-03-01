@@ -2,7 +2,7 @@
 <html prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="utf-8">  
-    <meta name="viewport" content="initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/> 
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" /> 
     <link href="/stylesheets/reset.css" type="text/css" rel="stylesheet">
     <link href="/stylesheets/base.css" type="text/css" rel="stylesheet">
     <link media="only screen and (max-device-width: 480px)" href="/stylesheets/mobile.css" type= "text/css" rel="stylesheet">
@@ -44,7 +44,8 @@
 		// Cook Action
 		document.getElementById('cook-button').addEventListener('click', function(e){
     
-      if (permissions && !permissions.publish_actions){
+      if (!permissions || 
+          (permissions && !permissions.publish_actions)){
         // user had not granted publish_actions, we need that perm
         console.log('user needs to grant publish_actions permission')
         FB.login(function(rsp){
