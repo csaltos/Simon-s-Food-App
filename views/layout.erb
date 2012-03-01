@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html prefix="og: http://ogp.me/ns#">
+<!doctype html>
+<html>
   <head>
     <meta charset="utf-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" /> 
@@ -14,7 +14,7 @@
     <div id="fb-root"></div>
     <script>
       var permissions = null; // stores the permissions the user had granted the app
-      window.wre = function() {
+      window.fbAsyncInit = function() {
         FB.init({
           appId      : '214109771989025', // App ID
           channelUrl : '//'+window.location.hostname+'/channel', // Channel File
