@@ -25,7 +25,7 @@
         });
 
   		// autologin & permissions check
-    		FB.Event.subscribe('auth.authResponseChange', function(rsp) {
+    		FB.Event.subscribe('auth.statusChange', function(rsp) {
     			console.log(rsp)
     			if (rsp.authResponse) {
     				FB.api('/me', function(me){
@@ -78,6 +78,7 @@
         deauth = function(){
           FB.api('/me/permissions', 'DELETE', function(rsp){
             if (rsp) {
+              console.log(rsp)
               window.location.reload()
             }
           })
