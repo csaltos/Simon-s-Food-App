@@ -11,6 +11,22 @@ img {
 	padding:10px;
 }
 
+
+#header #menu { 
+	display:block;
+	position:relative;
+}
+#header #menu > div {
+	display:inline;
+	padding-right:0;
+}
+
+#header #menu ul {
+	margin-bottom:10px;
+	display:block;
+}
+
+
 #content {
 	padding:10px 0 0 0;
 } 

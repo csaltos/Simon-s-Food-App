@@ -2,30 +2,13 @@ require "sinatra"
 require "mogli"
 require "sinatra/content_for"
 
-enable :sessions
 set :raise_errors, false
 set :show_exceptions, false
-
-
-unless ENV["FACEBOOK_APP_ID"] && ENV["FACEBOOK_SECRET"]
-  abort("missing env vars: please set FACEBOOK_APP_ID and FACEBOOK_SECRET with your app credentials")
-end
-
-before do
-  # HTTPS redirect
-  if settings.environment == :production && request.scheme != 'https'
-    redirect "https://#{request.env['HTTP_HOST']}"
-  end
-end
-
-
-
 
 get "/channel" do
   script = "<script src=\"//connect.facebook.net/en_US/all.js\"></script>"
   erb script, :layout => false
 end
-
 
 get "/" do
   erb :index

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" /> 
     <link href="/stylesheets/reset.css" type="text/css" rel="stylesheet">
     <link href="/stylesheets/base.css" type="text/css" rel="stylesheet">
-    <link media="only screen and (max-width: 520px)" href="/stylesheets/mobile.css" type= "text/css" rel="stylesheet">
+    <link media="only screen and (max-width: 720px)" href="/stylesheets/mobile.css" type= "text/css" rel="stylesheet">
     <% yield_content :head %>
     <meta property="og:site_name" content="Simon's Food App"/>
     <meta property="fb:app_id" content="214109771989025" />
@@ -14,6 +14,7 @@
     <div id="fb-root"></div>
     <script>
       var permissions = null; // stores the permissions the user had granted the app
+      var deauth = null;
       window.fbAsyncInit = function() {
         FB.init({
           appId      : '214109771989025', // App ID
@@ -23,55 +24,64 @@
           xfbml      : true  // parse XFBML
         });
 
-		// autologin & permissions check
-		FB.Event.subscribe('auth.statusChange', function(rsp) {
-			console.log(rsp)
-			if (rsp.authResponse) {
-				FB.api('/me', function(me){
-					console.log(me)
-					document.getElementById('fb-username').innerHTML = me.name;
-					document.getElementById('fb-login-button').style.display = 'none';
-					document.getElementById('fb-loggedin').style.display = 'block';
-				});
-        // get the permissions the user's already granted, we'll need them later
-				FB.api('/me/permissions', function(response){
-					console.log(response.data[0]);
-          permissions = response.data[0];
-				})
-			} else {
-				document.getElementById('fb-login-button').style.display = 'block';
-				document.getElementById('fb-loggedin').style.display = 'none';
+  		// autologin & permissions check
+    		FB.Event.subscribe('auth.authResponseChange', function(rsp) {
+    			console.log(rsp)
+    			if (rsp.authResponse) {
+    				FB.api('/me', function(me){
+    					console.log(me)
+    					document.getElementById('fb-username').innerHTML = me.name;
+    					document.getElementById('fb-login-button').style.display = 'none';
+    					document.getElementById('fb-loggedin').style.display = 'block';
+    				});
+            // get the permissions the user's already granted, we'll need them later
+    				FB.api('/me/permissions', function(response){
+              if (response) {
+      					console.log(response.data[0]);
+                permissions = response.data[0]; 
+              }
+    				})
+    			} else {
+    				document.getElementById('fb-login-button').style.display = 'block';
+    				document.getElementById('fb-loggedin').style.display = 'none';
 			  
-			}
-		})
+    			}
+    		})
 		
-		// Cook Action
-		document.getElementById('cook-button').addEventListener('click', function(e){
-    
-      if (!permissions || 
-          (permissions && !permissions.publish_actions)){
-        // user had not granted publish_actions, has not auth'd this app, or is not logged in to Facebook
-        console.log('user needs to grant publish_actions permission, login, or auth this app')
-        FB.login(function(rsp){
-  				FB.api('/me/permissions', function(response){
-  					console.log(response.data[0]);
-            permissions = response.data[0];
-  				})
-          // Could re-attempt to publish here, but won't for simplicity
-        },{scope:'publish_actions'})
+    		// Cook Action
+    		document.getElementById('cook-button').addEventListener('click', function(e){
+          if (!permissions || 
+              (permissions && !permissions.publish_actions)){
+            // user had not granted publish_actions, has not auth'd this app, or is not logged in to Facebook
+            console.log('user needs to grant publish_actions permission, login, or auth this app')
+            FB.login(function(rsp){
+      				FB.api('/me/permissions', function(response){
+      					console.log(response.data[0]);
+                permissions = response.data[0];
+      				})
+              // Could re-attempt to publish here, but won't for simplicity
+            },{scope:'publish_actions'})
       
-      } else {
-        // all good, let try and publish an action using the og:url tag as the object URL
-  			FB.api('/me/simonsfoodapp:cook', 'POST', {
-  				"recipe": document.getElementById('og-url').getAttribute('content')
-  			}, function(rsp){
-          console.log(rsp)
-  				if (rsp.id) {
-  				  alert('action published with ID: ' + rsp.id)
-  				}
-  			})
-      }
-		})
+          } else {
+            // all good, let try and publish an action using the og:url tag as the object URL
+      			FB.api('/me/simonsfoodapp:cook', 'POST', {
+      				"recipe": document.getElementById('og-url').getAttribute('content')
+      			}, function(rsp){
+              console.log(rsp)
+      				if (rsp.id) {
+      				  alert('action published with ID: ' + rsp.id)
+      				}
+      			})
+          }
+    		})
+        
+        deauth = function(){
+          FB.api('/me/permissions', 'DELETE', function(rsp){
+            if (rsp) {
+              window.location.reload()
+            }
+          })
+        }
         
       }; // end fbAsyncInit
 
@@ -83,6 +93,7 @@
          js.src = "//connect.facebook.net/en_US/all.js";
          ref.parentNode.insertBefore(js, ref);
        }(document));
+       
     </script>
 	  
 	  <div id="header">
@@ -118,7 +129,8 @@
 			</a>
 			<div id="fb-loggedin">
 				Hi, <span id="fb-username"></span>
-				(<a href="#" onclick="FB.logout()">Logout</a>)
+				(<a href="#" onclick="FB.logout()">logout</a>)
+        (<a href="#" onclick="deauth()">de-auth</a>)
 			</div>
  		</div>
 		 
