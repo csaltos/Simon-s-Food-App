@@ -15,6 +15,7 @@
     <script>
       var permissions = null; // stores the permissions the user had granted the app
       var deauth = null;
+      var removePublishActions = null;
       window.fbAsyncInit = function() {
         FB.init({
           appId      : '214109771989025', // App ID
@@ -75,6 +76,7 @@
           }
     		})
         
+        // removes the authentication between the user and the app
         deauth = function(){
           FB.api('/me/permissions', 'DELETE', function(rsp){
             if (rsp) {
@@ -83,6 +85,17 @@
             }
           })
         }
+        
+        // removes the publish_actions for the user
+        removePublishActions = function(){
+          FB.api('/me/permissions/publish_actions', 'DELETE', function(rsp){
+            if (rsp) {
+              console.log(rsp)
+              window.location.reload()
+            }
+          })
+        }
+        
         
       }; // end fbAsyncInit
 
@@ -132,6 +145,7 @@
 				Hi, <span id="fb-username"></span>
 				(<a href="#" onclick="FB.logout()">logout</a>)
         (<a href="#" onclick="deauth()">de-auth</a>)
+        (<a href="#" onclick="removePublishActions()">de-auth</a>)
 			</div>
  		</div>
 		 
