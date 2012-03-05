@@ -63,3 +63,14 @@ body {}
 #content form {
 	margin-bottom: 15px;
 }
+#content p {
+	margin: 3px 0 6px 0;
+}
+
+#content ul{
+	padding-left:10px;
+}
+
+#content li{
+	list-style:disc;
+}
